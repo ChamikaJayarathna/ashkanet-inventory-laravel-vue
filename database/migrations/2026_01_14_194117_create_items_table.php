@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('unit');
-            $table->integer('quantity');
+            $table->decimal('quantity')->default(0);
             $table->timestamps();
         });
     }

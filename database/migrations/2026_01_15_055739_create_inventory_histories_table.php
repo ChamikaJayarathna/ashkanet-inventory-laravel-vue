@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('inventory_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('item_id');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->enum('action', ['Added', 'Deducted']);
             $table->decimal('quantity');
             $table->timestamps();
         });
