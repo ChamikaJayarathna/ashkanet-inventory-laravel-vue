@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,12 @@ class InventoryHistoryFactory extends Factory
      */
     public function definition(): array
     {
+        $actions = ['Added', 'Deducted'];
+
         return [
-            //
+            'action' => fake()->randomElement($actions),
+            'quantity' => fake()->randomFloat(1, 2, 100),
+            'item_id' => Item::inRandomOrder()->first()->id,
         ];
     }
 }

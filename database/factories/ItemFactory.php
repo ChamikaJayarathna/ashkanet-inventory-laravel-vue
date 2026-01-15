@@ -16,8 +16,12 @@ class ItemFactory extends Factory
      */
     public function definition(): array
     {
+        $units = ['Kg', 'm', 'cm'];
+
         return [
-            //
+            'name' => fake()->name(),
+            'unit' => fake()->randomElement($units),
+            'quantity' => fake()->randomFloat(2, 1, 100)
         ];
     }
 }
