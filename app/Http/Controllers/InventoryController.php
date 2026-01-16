@@ -9,7 +9,14 @@ use Inertia\Inertia;
 
 class InventoryController extends Controller
 {
-    public function index() {}
+    public function index() {
+        $items = Item::orderBy('name')->get();
+
+        // Return results to a Vue page
+        // return Inertia::render('Inventory/Index', [
+        //     'items' => $items,
+        // ]);
+    }
 
     public function addItem(Request $request)
     {
