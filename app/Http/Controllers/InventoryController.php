@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\InventoryHistory;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class InventoryController extends Controller
 {
-    public function index()
-    {
-    }
+    public function index() {}
 
     public function addItem(Request $request)
     {
@@ -63,11 +62,15 @@ class InventoryController extends Controller
         return redirect()->back()->with('success', 'Item deducted successfully');
     }
 
-    public function history()
+    public function history(Item $item)
     {
+        $history = $item->history()->orderBy('created_at', 'desc')->get();
+
+        // return Inertia::render('Inventory/History', [
+        //     'item' => $item,
+        //     'history' => $history,
+        // ]);
     }
 
-    public function search()
-    {
-    }
+    public function search() {}
 }
