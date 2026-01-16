@@ -37,8 +37,30 @@ class InventoryController extends Controller
         return redirect()->back()->with('success', 'Item added successfully');
     }
 
-    public function deductItem()
+    public function deductItem(Request $request)
     {
+        $data = $request->validate([
+            'item_id' => 'required|exists:items,id',
+            'quantity' => 'required|numeric|min:0.01',
+        ]);
+
+        $item = Item::findOrFail($data['item_id']);
+
+        // Check if enough stock exists
+        if ($item->quantity < $data['quantity']) {
+            return redirect()->back()->with('error', 'Cannot deduct more than available quantity');
+        }
+
+        $item->quantity -= $data['quantity'];
+        $item->save();
+
+        InventoryHistory::create([
+            'item_id' => $item->id,
+            'action' => 'Deducted',
+            'quantity' => $data['quantity']
+        ]);
+
+        return redirect()->back()->with('success', 'Item deducted successfully');
     }
 
     public function history()
