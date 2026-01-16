@@ -66,11 +66,29 @@ class InventoryController extends Controller
     {
         $history = $item->history()->orderBy('created_at', 'desc')->get();
 
+        // Return results to a Vue page
         // return Inertia::render('Inventory/History', [
         //     'item' => $item,
         //     'history' => $history,
         // ]);
     }
 
-    public function search() {}
+    public function search(Request $request) {
+        $dat = $request->validate([
+            'query' => 'nullable|string|max:255',
+        ]);
+
+        $search = $dat['query'] ?? '';
+
+        $items = Item::where($search, function($query,$search){
+            $query->where('name', 'like', '%' . $search . '%');
+        })->orderBy('name')->get();
+
+        // Return results to a Vue page
+        // return Inertia::render('Inventory/SearchResults', [
+        //     'items' => $items,
+        //     'query' => $search,
+        // ]);
+
+    }
 }
